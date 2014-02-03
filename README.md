@@ -1,2 +1,1 @@
-School
-======
+School projects and activities

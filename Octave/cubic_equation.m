@@ -1,0 +1,9 @@
+a = input("Enter a: ");
+b = input("Enter b: ");
+c = input("Enter c: ");
+d = input("Enter d: ");
+p = [a,b,c,d];
+r5 = roots(p);
+disp("x1 = "), disp(r5(1));
+disp("x2 = "), disp(r5(2));
+disp("x3 = "), disp(r5(3));
