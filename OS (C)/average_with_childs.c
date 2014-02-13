@@ -15,7 +15,7 @@ int main()
         {
             a[i] = i % 255;
         }
-        int count_start = 1;
+        int count_start = 0;
         int parent_sum = 0;
         int parent_average;
         int count = 1 ;
@@ -24,14 +24,10 @@ int main()
         int child_sum = 0;
         int child_average;
         int sum = 0;
-        for(i = 0; i < 800000; i++)
-        {
-                sum+= i %255;
-        }
-        printf("%d\n", sum/800000);
         pid_t next_child;
         for(child_count = 0; child_count < N ; child_count++)
         {
+				count_start++;
                 next_child = fork();
                 if(next_child < 0)
                 {
@@ -39,8 +35,7 @@ int main()
                         exit(EXIT_FAILURE);
                 }
                 else if(next_child == 0)
-                {
-                        printf("Child with parent pid %d\n",getppid());
+                {                       
                         child_average = 0;
                         child_sum = 0;
                         for(count = (count_start-1) * ARRAY_SIZE/N; count < count_start * ARRAY_SIZE/N; count++)
@@ -49,15 +44,14 @@ int main()
                         }
                         child_average = child_sum/(ARRAY_SIZE/N);
                         exit(child_average);
-                }
-                else
-                {
-                        waitpid(next_child,&status,0);
-                        printf("%d\n", WEXITSTATUS(status));
-                        parent_sum += WEXITSTATUS(status);
-                        count_start++;
-                }
+                }              
         }
+
+		for(child_count = 0; child_count < N; child_count++)
+		{
+				wait(&status);
+				parent_sum += WEXITSTATUS(status);
+		}
         parent_average = parent_sum/N;
         printf("Parent average %d\n", parent_average);
         return 0;
