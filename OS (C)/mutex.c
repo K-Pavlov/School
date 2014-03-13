@@ -4,27 +4,32 @@
 
 pthread_mutex_t wait_for_worker;
 //worker with his total gold collected
-struct work
+struct mine
 {
-	int gold_collected = 0;
-}worker;
-worker* current_worker;
-void* sum(void* mine_gold)
-{
-	int gold_in_mine = (int) mine_gold;
-	while(gold_in_mine > 0)
-	{
-		pthread_mutex_lock(&sum_mutex);
-		//Behaviour of the workers
-		if(gold_in_mine > 0)
-		{
-			printf("Worker %d entered the mine\n",);
-			current_worker -> gold_collected += 10;
-			printf("Worker %d exited the mine\n", );
-		}
-		pthread_mutex_unlock(&sum_mutex);
-	}
+	int gold_in_mine;
+	bool used = 0;
 	
+}mines
+
+mines* allmines;
+
+void* sum(void* mine_count)
+{	
+	if(allmines[mine_count]->used == 0)
+	{
+		while(gold_in_mine > 0)
+		{
+			pthread_mutex_lock(&sum_mutex);
+			//Behaviour of the workers
+			if(gold_in_mine > 0)
+			{
+				printf("Worker %d entered the mine\n",);
+				current_worker -> gold_collected += 10;
+				printf("Worker %d exited the mine\n", );
+			}
+			pthread_mutex_unlock(&sum_mutex);
+		}
+	}		
 	pthread_exit(NULL);
 }
 
@@ -35,7 +40,7 @@ int main(int argc, char** argv)
 	int worker_count = (int) argv[2];
 	int mine_count = (int) argv[3];
 	
-	worker workers[worker_count];
+	allmines = malloc(sizeof(totalomines) * mine_count));
 	
 	pthread_t worker[worker_count];	
 	pthread_mutex_init(&wait_for_worker, NULL);
